@@ -7,3 +7,4 @@ PASTEL SHOPS — EMAIL + ID NUMBER VERIFICATION
 5. Supabase Table Editor: shop_email_id_verifications stores email, ID Number, shop, selected price, and timestamp. Export as CSV if needed.
 
 The two test shops retain existing Whop checkout URLs. Other shops retain their existing placeholder URLs. This ID is a custom demonstration identifier, not a payment card number.
+
