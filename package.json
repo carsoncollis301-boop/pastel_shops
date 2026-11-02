@@ -1,0 +1,11 @@
+{
+  "name": "pastel-shops-verification",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node -e \"console.log('Preparing Netlify functions')\""
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.0"
+  }
+}
