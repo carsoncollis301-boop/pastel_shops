@@ -3,7 +3,7 @@ exports.handler=async(event)=>{
  if(event.httpMethod!=='POST')return {statusCode:405,body:JSON.stringify({error:'Method not allowed'})};
  try{
   const {shop_name,email,id_number,price}=JSON.parse(event.body||'{}');
-  const shops=['Xoxo Gen','Torono Masters','Get Life Update','Edu Spark Up','Digital Adventures','Skill 0 Zen','Soft Get Skills'];
+  const shops=['Xoxo Gen','Torono Masters','Lumzi-Whop','Lumzi-Creem','Lumzi-Contra'];
   const cleanEmail=typeof email==='string'?email.trim().toLowerCase():'';
   if(!shops.includes(shop_name)||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)||cleanEmail.length>254||typeof id_number!=='string'||!/^[0-9]{14,16}$/.test(id_number)||typeof price!=='string'||!/^\$[0-9,]+(?:\.[0-9]{2})?$/.test(price))return {statusCode:400,body:JSON.stringify({error:'Enter a valid email and an ID Number containing 14 to 16 digits.'})};
   const url=process.env.SUPABASE_URL,key=process.env.SUPABASE_SERVICE_ROLE_KEY;
