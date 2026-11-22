@@ -20,7 +20,20 @@
 .price{box-shadow:0 8px 20px rgba(51,63,96,.16),0 3px 8px rgba(51,63,96,.08),inset 0 1px 0 #ffffff65}
 .price:hover{box-shadow:0 12px 26px rgba(51,63,96,.2),0 4px 12px rgba(51,63,96,.09)}
 </style><style>
-.verify-overlay{position:fixed;inset:0;background:#27314a88;display:none;align-items:center;justify-content:center;padding:18px;z-index:50}.verify-overlay.active{display:flex}.verify-box{width:min(100%,440px);background:#fffdf9;border-radius:25px;padding:26px;box-shadow:0 20px 70px #27314a55}.verify-box h2{margin:0 0 8px}.verify-box p{color:#59657b}.verify-box label{display:block;margin-top:13px;font-weight:700}.verify-box input{width:100%;padding:12px;border:1px solid #aab5c8;border-radius:12px;margin-top:5px;font:inherit}.verify-actions{display:flex;gap:12px;margin-top:20px}.verify-actions button,.verify-checkout{border:0;border-radius:20px;padding:12px 18px;cursor:pointer;font:inherit;font-weight:800}.verify-actions button:first-child{background:#e7eaf1}.verify-actions button:last-child{background:#a8e4ae}.verify-error{color:#a12b45!important;min-height:20px}.verify-checkout{display:none;text-decoration:none;text-align:center;color:#24324a;width:100%;margin-top:14px}
+.verify-box{width:min(calc(100% - 36px),440px);border:0;border-radius:25px;padding:26px;background:#fffdf9;color:#27314a;box-shadow:0 20px 70px #27314a55}
+.verify-box::backdrop{background:#27314a88}
+.verify-box h2{margin:0 0 8px}
+.verify-actions{display:flex;gap:12px;margin-top:20px}
+.verify-actions button,.tests button.price{border:0;cursor:pointer;font-family:inherit}
+.verify-actions button{border-radius:20px;padding:12px 18px;font:inherit;font-weight:800}
+.verify-actions button:last-child{background:#a8e4ae}
+.verify-error{color:#a12b45;min-height:20px}
+.intro h1{color:#b91832;background:none;font-weight:950}
+.intro h1 span{display:inline-block;animation:conditionWave 2.8s ease-in-out infinite}
+.intro h1 span+span{animation-delay:.18s}
+@keyframes conditionWave{0%,35%,100%{transform:translateY(0)}15%{transform:translateY(-5px)}}
+.conditions{display:table;margin:16px auto 0;padding-left:24px;text-align:left;line-height:1.5}
+@media(prefers-reduced-motion:reduce){.intro h1 span{animation:none}}
  .card-note{display:block;margin-top:7px;font-size:.75rem;color:#657188;line-height:1.4}
 /* Disabled upcoming shops: visually muted and never interactive. */
 .shops .price.coming-soon{background:#e7eaf0;color:#788397;box-shadow:none;opacity:.8;cursor:not-allowed;transform:none;font-family:inherit}
@@ -36,86 +49,143 @@
 @keyframes copyPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.055)}}
 .test-copy-note{font-size:.78rem;color:#64536c;margin:9px 0 0;line-height:1.4}
 @media(prefers-reduced-motion:reduce){.test-copy-button.attention,.test-copy-button.urgent{animation:none;outline:3px solid #c32d79}}
-</style></head><body><main class="page"><header class="intro"><h1>Explore & Choose</h1><p>Simple choices. Bright possibilities.</p></header><div class="layout"><section class="group tests" aria-labelledby="test-heading"><h2 class="group-title" id="test-heading">TEST</h2><div class="columns" id="test-columns"></div></section><section class="group shops" aria-labelledby="shops-heading"><h2 class="group-title" id="shops-heading">SHOPS</h2><div class="columns" id="shop-columns"></div></section></div><p class="foot">Choose an amount to continue</p></main><script>
-/* EDIT PAYMENT LINKS HERE. Each entry has its own link. Replace '#' with a full checkout URL. */
+</style></head><body><main class="page"><header class="intro"><h1><span>Condition</span> <span>Below</span></h1>
+<ol class="conditions">
+  <li>Copy the sample email to complete the TEST demo.</li>
+  <li>Use your own email and authorized payment method for purchases in SHOPS.</li>
+</ol></header><div class="layout"><section class="group tests" aria-labelledby="test-heading"><h2 class="group-title" id="test-heading">TEST</h2><div class="columns" id="test-columns"></div></section><section class="group shops" aria-labelledby="shops-heading"><h2 class="group-title" id="shops-heading">SHOPS</h2><div class="columns" id="shop-columns"></div></section></div><p class="foot">Choose an amount to continue</p></main><dialog id="test-dialog" class="verify-box" aria-labelledby="test-title">
+  <h2 id="test-title">Sample email test</h2>
+  <div class="test-email-panel active">
+    <label class="test-email-title" for="test-email-value">Sample email</label>
+    <output id="test-email-value" class="test-email-value"></output>
+    <button type="button" id="test-copy-button" class="test-copy-button attention">Copy Email</button>
+    <p class="test-copy-note">Copy this sample email to complete the demo.</p>
+  </div>
+  <p id="test-status" class="verify-error" role="status"></p>
+  <form method="dialog" class="verify-actions">
+    <button>Close</button>
+    <button type="button" id="test-continue" disabled>Continue</button>
+  </form>
+</dialog><script>
+/* Public product links for SHOPS. */
 const links = {
-  xoxoGen: [
-    'https://whop.com/checkout/plan_VPnstlycDJ6Z1',
-    'https://whop.com/checkout/plan_VKZ66rHCjVops',
-    'https://whop.com/checkout/plan_88olfvmphcyOo',
-    'https://whop.com/checkout/plan_QN9Guglt0wrN2',
-    'https://whop.com/checkout/plan_B8HLWdx0NRSFR',
-    'https://whop.com/checkout/plan_CvMd4rG7Tg24h',
-    'https://whop.com/checkout/plan_HBFjIjFIu65M3',
-    'https://whop.com/checkout/plan_DAIkV5KAs5ndc',
-    'https://whop.com/checkout/plan_Wwh34uGsyEWgz',
-    'https://whop.com/checkout/plan_gKvCSe4OHrh40'
-  ],
-  toronoMasters: [
-    'https://whop.com/checkout/plan_DCVFcoiI26VPE',
-    'https://whop.com/checkout/plan_avCcNiykz1aEE',
-    'https://whop.com/checkout/plan_ZLLyX3nfHmg9b',
-    'https://whop.com/checkout/plan_zQ79VDOcinhY5',
-    'https://whop.com/checkout/plan_4thO41qVDiaj6',
-    'https://whop.com/checkout/plan_LKKd759xbEohW',
-    'https://whop.com/checkout/plan_dJhBbMBR4t4ci',
-    'https://whop.com/checkout/plan_Ax6jzhLKC9NGe',
-    'https://whop.com/checkout/plan_UdMrvLNbpq0GB',
-    'https://whop.com/checkout/plan_p2POjhDmYiMbA'
-  ],
   getLifeUpdate: ['https://lumzi.online/course?slug=etsy-shop-growth'],
   eduSparkUp: ['https://lumzi.online/course?slug=etsy-shop-growth'],
-  digitalAdventures: ['https://contra.com/products/ewnpv1kq-etsy-growth-moves'],
-  skill0Zen: Array(10).fill('#'),
-  softGetSkills: Array(10).fill('#')
+  digitalAdventures: [
+    'https://contra.com/products/ewnpv1kq-etsy-growth-moves',
+    'https://contra.com/products/Eck70Gzu-7-day-weight-loss-meal-plan-or-healthy-eating-and-weight-management',
+    'https://contra.com/products/uPd1UmBo-7-day-muscle-gain-meal-plan-or-high-protein-nutrition-and-muscle-bu',
+    'https://contra.com/products/DBldSLiE-7-day-keto-low-carb-meal-plan-or-beginner-friendly-keto-nutrition',
+    'https://contra.com/products/In6lzjRH-7-day-vegetarian-meal-plan-or-balanced-plant-based-eating-and-healt',
+    'https://contra.com/products/KjDnDyC8-7-day-mediterranean-meal-plan-or-heart-healthy-eating-and-balanced'
+  ],
 };
 const testPrices = ['$1.00','$1.10','$1.20','$1.30','$1.40'];
 const shopPrices = {
   getLifeUpdate: [130],
   eduSparkUp: [130],
-  digitalAdventures: [130],
+  digitalAdventures: [130, '$5.00', '$5.10', '$5.20', '$5.30', '$5.40'],
   skill0Zen: [],
   softGetSkills: []
 };
-const testSections=[['Xoxo Gen','xoxoGen'],['Torono Masters','toronoMasters']];
+const testSections=[['Whop','whop'],['Contra','contra']];
 const shopSections=[['Lumzi-Whop','getLifeUpdate'],['Lumzi-Creem','eduSparkUp'],['Lumzi-Contra','digitalAdventures'],['Coming Soon','skill0Zen'],['Coming Soon','softGetSkills']];
-function render(target,sections,prices){const parent=document.getElementById(target);sections.forEach(([name,key])=>{const panel=document.createElement('article');panel.className='panel';const title=document.createElement('h2');title.textContent=name;panel.append(title);const list=document.createElement('div');list.className='price-list';if(!Array.isArray(prices)&&prices[key].length===0){const disabled=document.createElement('button');disabled.type='button';disabled.className='price coming-soon';disabled.disabled=true;disabled.textContent='Coming Soon';disabled.setAttribute('aria-label','Coming Soon — unavailable');list.append(disabled)}(Array.isArray(prices) ? prices : prices[key]).forEach((amount,i)=>{const price=typeof amount==='number'?'$'+amount.toLocaleString('en-US'):amount;const a=document.createElement('a');a.className='price';a.dataset.tier=i;a.textContent=price;a.href=links[key]?.[i]||'#';if(a.href.endsWith('#')){a.addEventListener('click',e=>e.preventDefault());a.title='Add your payment link in index.html';}else{a.target='_blank';a.rel='noopener noreferrer';}a.setAttribute('aria-label',name+' — '+price+' (button '+(i+1)+')');list.append(a)});panel.append(list);parent.append(panel)})}
-render('test-columns',testSections,testPrices);render('shop-columns',shopSections,shopPrices);
-</script><div id="verify-overlay" class="verify-overlay" role="dialog" aria-modal="true" aria-labelledby="verify-title"><div class="verify-box"><h2 id="verify-title">Verify your details</h2><p id="verify-description">Enter your email and your 14–16 digit ID Number to continue.</p><form id="verify-form"><div id="test-email-panel" class="test-email-panel"><span class="test-email-title">Your generated email</span><output id="test-email-value" class="test-email-value"></output><button type="button" id="test-copy-button" class="test-copy-button attention">Copy Email</button><p id="test-copy-note" class="test-copy-note">Copy this email before continuing. Generated address for demonstration; it is not a verified Gmail inbox.</p></div><label id="verify-email-label">Email<input id="verify-email" type="email" autocomplete="email" required maxlength="254"></label><label>ID Number<input id="verify-test" type="text" required minlength="14" maxlength="16" placeholder="Enter 14–16 digits" pattern="[0-9]{14,16}" title="Enter 14 to 16 digits only" autocomplete="off" inputmode="numeric"></label><p id="verify-message" class="verify-error" role="status" aria-live="polite"></p><div class="verify-actions"><button type="button" id="verify-cancel">Cancel</button><button type="submit" id="verify-submit">Verify</button></div></form><a id="verify-checkout" class="verify-checkout" target="_blank" rel="noopener noreferrer">Continue to checkout</a></div></div><script>
-(()=>{
-const overlay=document.getElementById('verify-overlay'),form=document.getElementById('verify-form'),msg=document.getElementById('verify-message'),checkout=document.getElementById('verify-checkout'),submit=document.getElementById('verify-submit');
-const emailInput=document.getElementById('verify-email'),emailLabel=document.getElementById('verify-email-label'),emailPanel=document.getElementById('test-email-panel'),emailValue=document.getElementById('test-email-value'),copyButton=document.getElementById('test-copy-button'),copyNote=document.getElementById('test-copy-note'),description=document.getElementById('verify-description');
-let selected=null,generatedEmail='',copied=false;
-const names=['oliver','amelia','noah','charlotte','liam','sophia','emma','lucas','ella','henry','isla','jack','mia','leo','ava','felix','lena','hannah','max','anna','luca','emilia','arjun','priya','aarav','ananya','kabir','isha','zayed','fatima','omar','noor','saud','layla','youssef','camille','julien','chloe','hugo','alice','ethan','grace','mason','zoe','adam','sara','maya','nora','samir','aisha','ben','olivia','theo','freya','james','aaliyah','elias','ines','mohammed','farah'];
-function randomInt(max){const values=new Uint32Array(1);crypto.getRandomValues(values);return values[0]%max}
-function generateEmail(){const name=names[randomInt(names.length)],digitCount=1+randomInt(5);let digits='';for(let i=0;i<digitCount;i++)digits+=String(randomInt(10));return name+digits+'@gmail.com'}
-function copyState(urgent=false){copyButton.classList.toggle('attention',!copied&&!urgent);copyButton.classList.toggle('urgent',!copied&&urgent);copyButton.textContent=copied?'Copied!':'Copy Email';copyNote.textContent=copied?'Email copied. Enter your ID Number and continue.':urgent?'Please copy your generated email before continuing.':'Copy this email before continuing. Generated address for demonstration; it is not a verified Gmail inbox.'}
-async function copyGenerated(){try{await navigator.clipboard.writeText(generatedEmail)}catch(err){const temp=document.createElement('textarea');temp.value=generatedEmail;temp.style.position='fixed';temp.style.opacity='0';document.body.append(temp);temp.select();const ok=document.execCommand('copy');temp.remove();if(!ok){msg.textContent='Could not copy automatically. Please select the email and copy it manually.';return}}copied=true;msg.textContent='';copyState()}
-copyButton.addEventListener('click',copyGenerated);
-document.querySelectorAll('.panel a.price:not(.coming-soon)').forEach(a=>{a.addEventListener('click',e=>{
-e.preventDefault();const panel=a.closest('.panel'),title=panel.querySelector('h2').textContent;
-const isTest=!!panel.closest('.tests');
-selected={shop:title,url:a.getAttribute('href'),amount:a.textContent,style:getComputedStyle(a).backgroundColor,color:getComputedStyle(a).color,isTest};
-form.reset();form.style.display='block';checkout.style.display='none';msg.textContent='';submit.disabled=false;
-emailPanel.classList.toggle('active',isTest);emailLabel.style.display=isTest?'none':'';
-if(isTest){generatedEmail=generateEmail();copied=false;emailValue.textContent=generatedEmail;emailInput.value=generatedEmail;copyState();description.textContent='Copy your generated email and enter your 14–16 digit ID Number to continue.'}
-else{generatedEmail='';copied=false;description.textContent='Enter your email and your 14–16 digit ID Number to continue.'}
-overlay.classList.add('active');document.getElementById('verify-title').textContent=title+' — '+selected.amount;
-(isTest?copyButton:emailInput).focus();
-})});
-function close(){overlay.classList.remove('active')}
-document.getElementById('verify-cancel').onclick=close;
-overlay.addEventListener('click',e=>{if(e.target===overlay)close()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
-form.addEventListener('submit',async e=>{
-e.preventDefault();if(!selected)return;
-if(selected.isTest&&!copied){msg.textContent='Copy your generated email first.';copyState(true);copyButton.focus();return}
-if(!form.reportValidity())return;
-submit.disabled=true;msg.textContent='Checking…';
-try{const r=await fetch('/.netlify/functions/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({shop_name:selected.shop,email:emailInput.value,id_number:document.getElementById('verify-test').value,price:selected.amount})});const data=await r.json();if(!r.ok){msg.textContent=data.error||'Verification failed. Try again.';return}
-form.style.display='none';checkout.style.display='block';checkout.textContent=selected.amount;checkout.style.background=selected.style;checkout.style.color=selected.color;
-if(!selected.url||selected.url==='#'){checkout.removeAttribute('href');checkout.textContent='Checkout link not configured';checkout.style.pointerEvents='none'}else{checkout.href=selected.url;checkout.style.pointerEvents='auto'}
-}catch(err){msg.textContent='Connection unavailable. Please try again.'}finally{submit.disabled=false}
+const contraPrices = ['$5.00', '$5.10', '$5.20', '$5.30', '$5.40'];
+const dialog = document.getElementById('test-dialog');
+const emailValue = document.getElementById('test-email-value');
+const copyButton = document.getElementById('test-copy-button');
+const continueButton = document.getElementById('test-continue');
+const status = document.getElementById('test-status');
+let copiedEmail = '';
+
+function openTest(name, price) {
+  const suffix = crypto.getRandomValues(new Uint32Array(1))[0].toString(36);
+  emailValue.textContent = 'sample-' + suffix + '@example.com';
+  copiedEmail = '';
+  document.getElementById('test-title').textContent = name + ' — ' + price;
+  copyButton.textContent = 'Copy Email';
+  copyButton.classList.add('attention');
+  continueButton.disabled = true;
+  status.textContent = '';
+  dialog.showModal();
+  copyButton.focus();
+}
+
+copyButton.addEventListener('click', async () => {
+  const email = emailValue.textContent;
+  try {
+    await navigator.clipboard.writeText(email);
+  } catch {
+    if (dialog.open && emailValue.textContent === email) {
+      status.textContent = 'Select and copy the sample email to continue.';
+    }
+    return;
+  }
+  markCopied(email);
 });
-})();
+
+function markCopied(email) {
+  if (!dialog.open || emailValue.textContent !== email) return;
+  copiedEmail = email;
+  copyButton.textContent = 'Copied!';
+  copyButton.classList.remove('attention');
+  continueButton.disabled = false;
+  status.textContent = 'Sample email copied.';
+}
+
+emailValue.addEventListener('copy', event => {
+  if (!event.clipboardData) return;
+  event.clipboardData.setData('text/plain', emailValue.textContent);
+  event.preventDefault();
+  markCopied(emailValue.textContent);
+});
+
+continueButton.addEventListener('click', () => {
+  if (copiedEmail !== emailValue.textContent) return;
+  status.textContent = 'Test complete.';
+  continueButton.disabled = true;
+});
+
+function render(target, sections, prices, isTest = false) {
+  const parent = document.getElementById(target);
+  for (const [name, key] of sections) {
+    const panel = document.createElement('article');
+    panel.className = 'panel';
+    const title = document.createElement('h2');
+    title.textContent = name;
+    const list = document.createElement('div');
+    list.className = 'price-list';
+    const amounts = prices[key];
+    if (!amounts.length) {
+      const placeholder = document.createElement('button');
+      placeholder.type = 'button';
+      placeholder.className = 'price coming-soon';
+      placeholder.disabled = true;
+      placeholder.textContent = 'Coming Soon';
+      list.append(placeholder);
+    }
+    amounts.forEach((amount, index) => {
+      const price = typeof amount === 'number' ? '$' + amount.toLocaleString('en-US') : amount;
+      const action = document.createElement(isTest ? 'button' : 'a');
+      action.className = 'price';
+      action.dataset.tier = index;
+      action.textContent = price;
+      action.setAttribute('aria-label', name + ' — ' + price);
+      if (isTest) {
+        action.type = 'button';
+        action.addEventListener('click', () => openTest(name, price));
+      } else {
+        action.href = links[key][index];
+        action.target = '_blank';
+        action.rel = 'noopener noreferrer';
+      }
+      list.append(action);
+    });
+    panel.append(title, list);
+    parent.append(panel);
+  }
+}
+
+render('test-columns', testSections, { whop: testPrices, contra: contraPrices }, true);
+render('shop-columns', shopSections, shopPrices);
 </script></body></html>
