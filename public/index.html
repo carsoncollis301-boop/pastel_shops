@@ -88,9 +88,21 @@ const emailValue = document.getElementById('test-email-value');
 const copyButton = document.getElementById('test-copy-button');
 const status = document.getElementById('test-status');
 
+const names = ['oliver','amelia','noah','charlotte','liam','sophia','emma','lucas','ella','henry','isla','jack','mia','leo','ava','felix','lena','hannah','max','anna','luca','emilia','arjun','priya','aarav','ananya','kabir','isha','zayed','fatima','omar','noor','saud','layla','youssef','camille','julien','chloe','hugo','alice','ethan','grace','mason','zoe','adam','sara','maya','nora','samir','aisha','ben','olivia','theo','freya','james','aaliyah','elias','ines','mohammed','farah'];
+function randomInt(max) {
+  return crypto.getRandomValues(new Uint32Array(1))[0] % max;
+}
+
+function generateEmail() {
+  const name = names[randomInt(names.length)];
+  const digitCount = 1 + randomInt(5);
+  let digits = '';
+  for (let i = 0; i < digitCount; i++) digits += randomInt(10);
+  return name + digits + '@gmail.com';
+}
+
 function openTest(name, price) {
-  const suffix = crypto.getRandomValues(new Uint32Array(1))[0].toString(36);
-  emailValue.textContent = 'sample-' + suffix + '@example.com';
+  emailValue.textContent = generateEmail();
   document.getElementById('test-title').textContent = name + ' — ' + price;
   copyButton.textContent = 'Copy Email';
   copyButton.classList.add('attention');
