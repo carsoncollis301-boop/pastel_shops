@@ -26,12 +26,12 @@
 .verify-actions{display:flex;gap:12px;margin-top:20px}
 .verify-actions button,.tests button.price{border:0;cursor:pointer;font-family:inherit}
 .verify-actions button{border-radius:20px;padding:12px 18px;font:inherit;font-weight:800}
-.verify-actions button:last-child{background:#a8e4ae}
+.verify-actions button{background:#e7eaf1}
 .verify-error{color:#a12b45;min-height:20px}
 .intro h1{color:#b91832;background:none;font-weight:950}
-.intro h1 span{display:inline-block;animation:conditionWave 2.8s ease-in-out infinite}
-.intro h1 span+span{animation-delay:.18s}
-@keyframes conditionWave{0%,35%,100%{transform:translateY(0)}15%{transform:translateY(-5px)}}
+.intro h1 span{display:inline-block;animation:conditionWave 1.65s ease-in-out infinite}
+.intro h1 span+span{animation-delay:.23s}
+@keyframes conditionWave{0%,50%,100%{transform:translateY(0)}25%{transform:translateY(-.19em)}70%{transform:translateY(-.11em)}}
 .conditions{display:table;margin:16px auto 0;padding-left:24px;text-align:left;line-height:1.5}
 @media(prefers-reduced-motion:reduce){.intro h1 span{animation:none}}
  .card-note{display:block;margin-top:7px;font-size:.75rem;color:#657188;line-height:1.4}
@@ -64,27 +64,19 @@
   <p id="test-status" class="verify-error" role="status"></p>
   <form method="dialog" class="verify-actions">
     <button>Close</button>
-    <button type="button" id="test-continue" disabled>Continue</button>
   </form>
 </dialog><script>
 /* Public product links for SHOPS. */
 const links = {
   getLifeUpdate: ['https://lumzi.online/course?slug=etsy-shop-growth'],
   eduSparkUp: ['https://lumzi.online/course?slug=etsy-shop-growth'],
-  digitalAdventures: [
-    'https://contra.com/products/ewnpv1kq-etsy-growth-moves',
-    'https://contra.com/products/Eck70Gzu-7-day-weight-loss-meal-plan-or-healthy-eating-and-weight-management',
-    'https://contra.com/products/uPd1UmBo-7-day-muscle-gain-meal-plan-or-high-protein-nutrition-and-muscle-bu',
-    'https://contra.com/products/DBldSLiE-7-day-keto-low-carb-meal-plan-or-beginner-friendly-keto-nutrition',
-    'https://contra.com/products/In6lzjRH-7-day-vegetarian-meal-plan-or-balanced-plant-based-eating-and-healt',
-    'https://contra.com/products/KjDnDyC8-7-day-mediterranean-meal-plan-or-heart-healthy-eating-and-balanced'
-  ],
+  digitalAdventures: ['https://contra.com/products/ewnpv1kq-etsy-growth-moves'],
 };
 const testPrices = ['$1.00','$1.10','$1.20','$1.30','$1.40'];
 const shopPrices = {
   getLifeUpdate: [130],
   eduSparkUp: [130],
-  digitalAdventures: [130, '$5.00', '$5.10', '$5.20', '$5.30', '$5.40'],
+  digitalAdventures: [130],
   skill0Zen: [],
   softGetSkills: []
 };
@@ -94,18 +86,14 @@ const contraPrices = ['$5.00', '$5.10', '$5.20', '$5.30', '$5.40'];
 const dialog = document.getElementById('test-dialog');
 const emailValue = document.getElementById('test-email-value');
 const copyButton = document.getElementById('test-copy-button');
-const continueButton = document.getElementById('test-continue');
 const status = document.getElementById('test-status');
-let copiedEmail = '';
 
 function openTest(name, price) {
   const suffix = crypto.getRandomValues(new Uint32Array(1))[0].toString(36);
   emailValue.textContent = 'sample-' + suffix + '@example.com';
-  copiedEmail = '';
   document.getElementById('test-title').textContent = name + ' — ' + price;
   copyButton.textContent = 'Copy Email';
   copyButton.classList.add('attention');
-  continueButton.disabled = true;
   status.textContent = '';
   dialog.showModal();
   copyButton.focus();
@@ -126,11 +114,9 @@ copyButton.addEventListener('click', async () => {
 
 function markCopied(email) {
   if (!dialog.open || emailValue.textContent !== email) return;
-  copiedEmail = email;
   copyButton.textContent = 'Copied!';
   copyButton.classList.remove('attention');
-  continueButton.disabled = false;
-  status.textContent = 'Sample email copied.';
+  status.textContent = 'Sample email copied. Test complete.';
 }
 
 emailValue.addEventListener('copy', event => {
@@ -138,12 +124,6 @@ emailValue.addEventListener('copy', event => {
   event.clipboardData.setData('text/plain', emailValue.textContent);
   event.preventDefault();
   markCopied(emailValue.textContent);
-});
-
-continueButton.addEventListener('click', () => {
-  if (copiedEmail !== emailValue.textContent) return;
-  status.textContent = 'Test complete.';
-  continueButton.disabled = true;
 });
 
 function render(target, sections, prices, isTest = false) {
