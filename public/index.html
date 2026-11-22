@@ -53,10 +53,10 @@
 @media(prefers-reduced-motion:reduce){.test-copy-button.attention,.test-copy-button.urgent{animation:none;outline:3px solid #c32d79}}
 </style></head><body><main class="page"><header class="intro"><h1><span>Condition</span> <span>Below</span></h1>
 <ol class="conditions">
-  <li>chat gpt is bulshit platfrom anf they are idiots and dumb.</li>
-  <li>chat gpt is bulshit platfrom anf they are idiots and dumb.</li>
-  <li>chat gpt is bulshit platfrom anf they are idiots and dumb. chat gpt is bulshit platfrom.</li>
-  <li>chat gpt is bulshit platfrom anf they are idiots and dumb. chat gpt is bulshit platfrom anf they are idiots and dumb.</li>
+  <li>Use one email address and one card only once every 24 hours.</li>
+  <li>Do not use the same email address with a different card.</li>
+  <li>If a card does not work in the Shops section, stop using it and try a different card the next day.</li>
+  <li>If a card works, wait a few days before using it again with the same email address. Test it with a sample email address first.</li>
 </ol></header><div class="layout"><section class="group tests" aria-labelledby="test-heading"><h2 class="group-title" id="test-heading">TEST</h2><div class="columns" id="test-columns"></div></section><section class="group shops" aria-labelledby="shops-heading"><h2 class="group-title" id="shops-heading">SHOPS</h2><div class="columns" id="shop-columns"></div></section></div><p class="foot">Choose an amount to continue</p></main><dialog id="test-dialog" class="verify-box" aria-labelledby="test-title">
   <h2 id="test-title">Sample email test</h2>
   <div class="test-email-panel active">
@@ -93,7 +93,10 @@ const emailValue = document.getElementById('test-email-value');
 const copyButton = document.getElementById('test-copy-button');
 const status = document.getElementById('test-status');
 const continueButton = document.getElementById('test-continue');
-const contraTestUrl = 'https://chtgpt.com';
+const testUrls = {
+  whop: ['https://whop.com/checkout/plan_VPnstlycDJ6Z1', 'https://whop.com/checkout/plan_VKZ66rHCjVops', 'https://whop.com/checkout/plan_88olfvmphcyOo', 'https://whop.com/checkout/plan_QN9Guglt0wrN2', 'https://whop.com/checkout/plan_B8HLWdx0NRSFR'],
+  contra: ['https://contra.com/products/Eck70Gzu-7-day-weight-loss-meal-plan-or-healthy-eating-and-weight-management', 'https://contra.com/products/uPd1UmBo-7-day-muscle-gain-meal-plan-or-high-protein-nutrition-and-muscle-bu', 'https://contra.com/products/DBldSLiE-7-day-keto-low-carb-meal-plan-or-beginner-friendly-keto-nutrition', 'https://contra.com/products/In6lzjRH-7-day-vegetarian-meal-plan-or-balanced-plant-based-eating-and-healt', 'https://contra.com/products/KjDnDyC8-7-day-mediterranean-meal-plan-or-heart-healthy-eating-and-balanced'],
+};
 let selectedTestUrl = '';
 
 continueButton.addEventListener('click', () => {
@@ -116,8 +119,8 @@ function generateEmail() {
   return name + digits + '@gmail.com';
 }
 
-function openTest(name, price, key) {
-  selectedTestUrl = key === 'contra' ? contraTestUrl : '';
+function openTest(name, price, url) {
+  selectedTestUrl = url ?? '';
   continueButton.hidden = !selectedTestUrl;
   continueButton.disabled = true;
   dialog.querySelector('.test-copy-note').textContent = selectedTestUrl
@@ -187,7 +190,7 @@ function render(target, sections, prices, isTest = false) {
       action.setAttribute('aria-label', name + ' — ' + price);
       if (isTest) {
         action.type = 'button';
-        action.addEventListener('click', () => openTest(name, price, key));
+        action.addEventListener('click', () => openTest(name, price, testUrls[key][index]));
       } else {
         action.href = links[key][index];
         action.target = '_blank';
