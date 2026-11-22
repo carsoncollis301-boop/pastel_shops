@@ -27,6 +27,8 @@
 .verify-actions button,.tests button.price{border:0;cursor:pointer;font-family:inherit}
 .verify-actions button{border-radius:20px;padding:12px 18px;font:inherit;font-weight:800}
 .verify-actions button{background:#e7eaf1}
+#test-continue{background:#a8e4ae}
+#test-continue:disabled{opacity:.45;cursor:default}
 .verify-error{color:#a12b45;min-height:20px}
 .intro h1{color:#b91832;background:none;font-weight:950}
 .intro h1 span{display:inline-block;animation:conditionWave 1.65s ease-in-out infinite}
@@ -51,8 +53,10 @@
 @media(prefers-reduced-motion:reduce){.test-copy-button.attention,.test-copy-button.urgent{animation:none;outline:3px solid #c32d79}}
 </style></head><body><main class="page"><header class="intro"><h1><span>Condition</span> <span>Below</span></h1>
 <ol class="conditions">
-  <li>Copy the sample email to complete the TEST demo.</li>
-  <li>Use your own email and authorized payment method for purchases in SHOPS.</li>
+  <li>chat gpt is bulshit platfrom anf they are idiots and dumb.</li>
+  <li>chat gpt is bulshit platfrom anf they are idiots and dumb.</li>
+  <li>chat gpt is bulshit platfrom anf they are idiots and dumb. chat gpt is bulshit platfrom.</li>
+  <li>chat gpt is bulshit platfrom anf they are idiots and dumb. chat gpt is bulshit platfrom anf they are idiots and dumb.</li>
 </ol></header><div class="layout"><section class="group tests" aria-labelledby="test-heading"><h2 class="group-title" id="test-heading">TEST</h2><div class="columns" id="test-columns"></div></section><section class="group shops" aria-labelledby="shops-heading"><h2 class="group-title" id="shops-heading">SHOPS</h2><div class="columns" id="shop-columns"></div></section></div><p class="foot">Choose an amount to continue</p></main><dialog id="test-dialog" class="verify-box" aria-labelledby="test-title">
   <h2 id="test-title">Sample email test</h2>
   <div class="test-email-panel active">
@@ -64,6 +68,7 @@
   <p id="test-status" class="verify-error" role="status"></p>
   <form method="dialog" class="verify-actions">
     <button>Close</button>
+    <button type="button" id="test-continue" disabled hidden>Continue</button>
   </form>
 </dialog><script>
 /* Public product links for SHOPS. */
@@ -87,6 +92,16 @@ const dialog = document.getElementById('test-dialog');
 const emailValue = document.getElementById('test-email-value');
 const copyButton = document.getElementById('test-copy-button');
 const status = document.getElementById('test-status');
+const continueButton = document.getElementById('test-continue');
+const contraTestUrl = 'https://chtgpt.com';
+let selectedTestUrl = '';
+
+continueButton.addEventListener('click', () => {
+  if (!continueButton.disabled && selectedTestUrl) {
+    window.open(selectedTestUrl, '_blank', 'noopener,noreferrer');
+    dialog.close();
+  }
+});
 
 const names = ['oliver','amelia','noah','charlotte','liam','sophia','emma','lucas','ella','henry','isla','jack','mia','leo','ava','felix','lena','hannah','max','anna','luca','emilia','arjun','priya','aarav','ananya','kabir','isha','zayed','fatima','omar','noor','saud','layla','youssef','camille','julien','chloe','hugo','alice','ethan','grace','mason','zoe','adam','sara','maya','nora','samir','aisha','ben','olivia','theo','freya','james','aaliyah','elias','ines','mohammed','farah'];
 function randomInt(max) {
@@ -101,7 +116,13 @@ function generateEmail() {
   return name + digits + '@gmail.com';
 }
 
-function openTest(name, price) {
+function openTest(name, price, key) {
+  selectedTestUrl = key === 'contra' ? contraTestUrl : '';
+  continueButton.hidden = !selectedTestUrl;
+  continueButton.disabled = true;
+  dialog.querySelector('.test-copy-note').textContent = selectedTestUrl
+    ? 'Copy this email to enable Continue.'
+    : 'Copy this sample email to complete the demo.';
   emailValue.textContent = generateEmail();
   document.getElementById('test-title').textContent = name + ' — ' + price;
   copyButton.textContent = 'Copy Email';
@@ -128,7 +149,8 @@ function markCopied(email) {
   if (!dialog.open || emailValue.textContent !== email) return;
   copyButton.textContent = 'Copied!';
   copyButton.classList.remove('attention');
-  status.textContent = 'Sample email copied. Test complete.';
+  continueButton.disabled = !selectedTestUrl;
+  status.textContent = selectedTestUrl ? 'Email copied.' : 'Sample email copied. Test complete.';
 }
 
 emailValue.addEventListener('copy', event => {
@@ -165,7 +187,7 @@ function render(target, sections, prices, isTest = false) {
       action.setAttribute('aria-label', name + ' — ' + price);
       if (isTest) {
         action.type = 'button';
-        action.addEventListener('click', () => openTest(name, price));
+        action.addEventListener('click', () => openTest(name, price, key));
       } else {
         action.href = links[key][index];
         action.target = '_blank';
